@@ -118,8 +118,8 @@ function dd(...$args)
 function getGoogleLinksBySearch(string $search, ?string $excludeTerms = '', ?string $country = 'br'): array
 {
     $properties = [
-        'cx' => "17e10092d249747cf",
-        'key' => "AIzaSyDd-sbd5zCh3uOYt3JAniDz91sHsnbllUc",
+        'cx' => getenv('SEARCH_ENGINE_ID'),
+        'key' => getenv('API_CUSTOM_SEARCH_KEY'),
         'q' => urlencode($search),
         'lr' => "lang_pt",
         'excludeTerms' => $excludeTerms,

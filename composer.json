@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "querypath/querypath": ">=3.0.0"
+        "querypath/querypath": ">=3.0.0",
+        "guzzlehttp/guzzle": "^7.0"
     }
 }
