@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'gess/robo-email-busca-google',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => NULL,
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'gess/robo-email-busca-google' => array(
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => NULL,
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'masterminds/html5' => array(
+            'pretty_version' => '2.8.1',
+            'version' => '2.8.1.0',
+            'reference' => 'f47dcf3c70c584de14f21143c55d9939631bc6cf',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../masterminds/html5',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'querypath/querypath' => array(
+            'pretty_version' => '3.0.5',
+            'version' => '3.0.5.0',
+            'reference' => '6b8e2395fac61fac25bbe962f94def556cb85f7d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../querypath/querypath',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

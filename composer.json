@@ -1,0 +1,17 @@
+{
+    "name": "gess/robo-email-busca-google",
+    "autoload": {
+        "psr-4": {
+            "Gess\\RoboEmailBuscaGoogle\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Guilherme Santos",
+            "email": "gsousadev@gmail.com"
+        }
+    ],
+    "require": {
+        "querypath/querypath": ">=3.0.0"
+    }
+}
