@@ -4,12 +4,9 @@ require 'vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 
-try {
-    $options = getCommandOptions();
+function initSearch(string $textSearch, $category){
 
-    $textSearch = $options['q'];
-
-    $links = getGoogleLinksByMapsTextSearch($textSearch);
+    $links = getGoogleLinksByMapsTextSearch($textSearch, $category);
 
     $contacts = [];
 
@@ -17,27 +14,37 @@ try {
     echo "# Acessando sites para buscar emails " . PHP_EOL;
 
     foreach ($links as $link) {
-        $contacts[] = getContactEmailByWebSite($link);
-        echo "*";
+        $findedInfos = getContactEmailByWebSite($link);
+
+        if (!is_null($findedInfos['email'])) {
+            $contacts[] = getContactEmailByWebSite($link);
+            echo "*";
+        } else {
+            echo "x";
+        }
     }
 
     echo PHP_EOL . "# Gerando arquivo ...";
-    generateFile($contacts,$textSearch);
-    echo PHP_EOL . "# Arquivo gerado com sucesso: 'output_files/";
-} catch (\Throwable $e) {
-    echo "Ocorreu um erro: " . $e->getMessage() . PHP_EOL;
+    $fileNameGenerated = generateFile($contacts, $category);
+    echo PHP_EOL . "# Arquivo gerado/alterado com sucesso: '$fileNameGenerated'";
 }
 
-function generateFile(array $contacts, string $textSearch): string
+function generateFile(array $contacts, string $category): string
 {
 
-    $fileName = clearFileName($textSearch) . "_" . (new DateTime())->format('Y-m-d_H:i:s');
+    $fileName = clearFileName($category);
     $path = './output_files';
     if (!is_dir($path)) {
         mkdir($path, 0777, true);
     }
 
     $completePath = './output_files/' . $fileName . '.json';
+
+    $actualContent = json_decode(file_get_contents($completePath), true);
+
+    if (is_file($completePath) && !empty($actualContent)) {
+        $contacts = array_merge($actualContent, $contacts);
+    }
 
     file_put_contents($completePath, json_encode($contacts));
 
@@ -57,7 +64,7 @@ function dd(...$args)
     die();
 }
 
-function getGoogleLinksByMapsTextSearch(string $search): array
+function getGoogleLinksByMapsTextSearch(string $search, string $category): array
 {
     $curl = curl_init();
 
@@ -71,7 +78,7 @@ function getGoogleLinksByMapsTextSearch(string $search): array
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
         CURLOPT_POSTFIELDS => '{
-      "textQuery" : "' . $search . '"
+      "textQuery" : "' . $category . '+' . $search . '",
     }',
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
@@ -101,10 +108,14 @@ function getGoogleLinksByMapsTextSearch(string $search): array
 
 function getCommandOptions(): array
 {
-    $options = getopt("q:");
+    $options = getopt("q:c:");
 
     if (!isset($options['q']) || empty($options['q'])) {
-        throw new \Exception("Parametro '-q' é obrigatório");
+        throw new \Exception("Parametro '-q' de 'query' é obrigatório");
+    }
+
+    if (!isset($options['c']) || empty($options['c'])) {
+        throw new \Exception("Parametro '-c' de 'categoria' é obrigatório");
     }
 
     return $options;
@@ -119,7 +130,7 @@ function getContactEmailByWebSite(string $url)
         return ['url' => $url, 'email' => null];
     }
 
-    $emailPattern = '/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/';
+    $emailPattern = '/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(org|com|com\.br)/';
 
     $matches = getRegexInHtml($html, $emailPattern);
 

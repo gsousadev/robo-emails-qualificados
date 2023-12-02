@@ -1,5 +1,8 @@
 <?php
+require 'vendor/autoload.php';
 
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+$dotenv->load();
 
 const EXCLUDE_SITES = [
     'facebook.com',
@@ -20,11 +23,6 @@ try {
     die();
 }
 
-function dd(...$args)
-{
-    var_dump($args);
-    die();
-}
 
 function getGoogleLinksBySearch(string $search, ?string $excludeTerms = '', ?string $country = 'br'): array
 {
@@ -56,13 +54,4 @@ function getGoogleLinksBySearch(string $search, ?string $excludeTerms = '', ?str
     return $links;
 }
 
-function getCommandOptions(): array
-{
-    $options = getopt("q:e::c::");
 
-    if (!isset($options['q']) || empty($options['q'])) {
-        throw new Exception("Parametro '-q' é obrigatório");
-    }
-
-    return $options;
-}
