@@ -4,7 +4,8 @@ require 'vendor/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 
-function initSearch(string $textSearch, $category){
+function initSearch(string $textSearch, $category)
+{
 
     $links = getGoogleLinksByMapsTextSearch($textSearch, $category);
 
@@ -18,9 +19,9 @@ function initSearch(string $textSearch, $category){
 
         if (!is_null($findedInfos['email'])) {
             $contacts[] = getContactEmailByWebSite($link);
-            echo "*";
+            echo " [*] " . PHP_EOL;
         } else {
-            echo "x";
+            echo " [x]" . PHP_EOL;
         }
     }
 
@@ -124,6 +125,7 @@ function getCommandOptions(): array
 
 function getContactEmailByWebSite(string $url)
 {
+    echo "- $url";
     $html = fetchUrl($url);
 
     if (is_null($html)) {
@@ -154,7 +156,9 @@ function getContactEmailByWebSite(string $url)
 function fetchUrl(string $url): ?string
 {
     try {
-        return (new Client())->get($url)->getBody()->getContents();
+        return (new Client([
+            'timeout' => 6,
+        ]))->get($url)->getBody()->getContents();
     } catch (TransferException $e) {
         return null;
     }
