@@ -52,19 +52,6 @@ function generateFile(array $contacts, string $category): string
     return $completePath;
 }
 
-function clearFileName(string $fileName): string
-{
-    $fileName = preg_replace('/[^\w\d]+/', '_', $fileName);
-    return preg_replace('/_+/', '_', $fileName);
-}
-
-
-function dd(...$args)
-{
-    var_dump($args);
-    die();
-}
-
 function getGoogleLinksByMapsTextSearch(string $search, string $category): array
 {
     $curl = curl_init();
