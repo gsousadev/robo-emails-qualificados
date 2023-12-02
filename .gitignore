@@ -1,3 +1,4 @@
 /vendor
 /output_files
+/input_files
 .env
