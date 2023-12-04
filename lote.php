@@ -5,9 +5,9 @@ require 'src/getPlacesByTextSearch.php';
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
-$categorias = json_decode(file_get_contents('./input_files/categorias.json'), true);
+$categorias = json_decode(file_get_contents('./input_files/categories.json'), true);
 
-$regioes = json_decode(file_get_contents('./input_files/regioes.json'), true);
+$regioes = json_decode(file_get_contents('./input_files/zones.json'), true);
 
 $count = 1;
 
